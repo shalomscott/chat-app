@@ -1,0 +1,11 @@
+<div class="row" [class.you]="isYou">
+  <div class="bubble" [class.you]="isYou">
+    <div class="content">
+      <span class="username">{{ message.username }}</span>
+      @
+      <span class="time">{{ message.timestamp | date: "shortTime" }}</span>
+      <span class="text">{{ message.text }}</span>
+      <span class="checks" [class.acked]="message.acked"></span>
+    </div>
+  </div>
+</div>

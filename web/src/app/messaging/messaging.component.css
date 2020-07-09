@@ -1,0 +1,25 @@
+:host {
+  align-self: stretch;
+  height: 100%;
+  padding: 0.5rem 2rem;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.input-area {
+  margin-top: auto;
+}
+
+form {
+  margin-bottom: 1rem;
+  display: flex;
+}
+
+form > input {
+  flex-grow: 1;
+}
+
+form > button {
+  margin-inline-start: 1rem;
+}

@@ -1,0 +1,113 @@
+:host {
+  --color: var(--light-green);
+}
+
+.you {
+  --color: var(--green);
+}
+
+.row {
+  padding: 0.5rem 0;
+}
+
+.row.you {
+  text-align: end;
+}
+
+.bubble {
+  display: inline-block;
+  position: relative;
+  width: 250px;
+  height: auto;
+  background-color: var(--color);
+  border: 2px solid black;
+  text-align: start;
+}
+
+.content {
+  padding: 0.5rem;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.time {
+  font-style: italic;
+}
+
+.text {
+  display: block;
+  padding: 0.5rem;
+  word-wrap: break-word;
+}
+
+.checks {
+  display: block;
+  text-align: end;
+}
+
+.checks::after {
+  content: "✓";
+  padding: 0 0.5rem;
+  color: gray;
+}
+
+.checks.acked::after {
+  content: "✓✓";
+  color: dodgerblue;
+}
+
+/* Right triangle placed top left flush. */
+.bubble:not(.you):before {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -25px;
+  right: auto;
+  top: -2px;
+  bottom: auto;
+  z-index: -1;
+  border: 24px solid;
+  border-color: black transparent transparent transparent;
+}
+.bubble:not(.you):after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -20px;
+  right: auto;
+  top: 0px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: var(--color) transparent transparent transparent;
+}
+
+/* Right triangle placed top right flush. */
+.bubble.you:before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -25px;
+  top: -2px;
+  bottom: auto;
+  z-index: -1;
+  border: 24px solid;
+  border-color: black transparent transparent transparent;
+}
+.bubble.you:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: auto;
+  right: -20px;
+  top: 0px;
+  bottom: auto;
+  border: 20px solid;
+  border-color: var(--color) transparent transparent transparent;
+}

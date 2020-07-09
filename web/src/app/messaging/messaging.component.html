@@ -1,0 +1,16 @@
+<app-message-bubble
+  *ngFor="let message of messages"
+  [message]="message"
+  [isYou]="messagesService.isCurrentUser(message)"
+></app-message-bubble>
+
+<div class="input-area">
+  <p>
+    {{ formatTypingMessage() }}
+  </p>
+
+  <form [formGroup]="messageForm" (ngSubmit)="send()">
+    <input id="text" type="text" formControlName="text" (input)="typing()" />
+    <button class="button" type="submit">Send</button>
+  </form>
+</div>
