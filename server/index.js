@@ -13,12 +13,10 @@ io.on("connection", (socket) => {
   socket.on("ack", (messageId) => io.emit("ack", messageId));
 
   socket.on("start_typing", (username) => {
-    console.log("got started typing from " + username);
     io.emit("start_typing", username);
   });
 
   socket.on("stop_typing", (username) => {
-    console.log("got stopped typing from " + username);
     io.emit("stop_typing", username);
   });
 });

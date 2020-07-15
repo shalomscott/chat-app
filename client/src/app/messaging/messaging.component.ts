@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Message, MessagesService } from '../messages.service';
+import { MessagesService } from '../messages.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-messaging',
@@ -34,15 +35,22 @@ export class MessagingComponent implements OnInit {
     }, 500);
   }
 
-  getTypingMessage() {
-    const typingUsers = this.messagesService.getTypingUsers();
-    if (typingUsers.length > 0) {
-      const typingMessage = typingUsers.join(',');
-      return typingMessage.concat(
-        typingUsers.length === 1 ? ' is typing...' : ' are typing...'
-      );
+  public readonly typingMessage: Observable<string> = new Observable(
+    (observer) => {
+      this.messagesService.typingUsers.subscribe((typingUsers) => {
+        if (typingUsers.length > 0) {
+          const typingMessage = typingUsers.join(',');
+          observer.next(
+            typingMessage.concat(
+              typingUsers.length === 1 ? ' is typing...' : ' are typing...'
+            )
+          );
+        } else {
+          observer.next('');
+        }
+      });
     }
-  }
+  );
 
   send() {
     this.messagesService.sendMessage(this.messageForm.value.text);

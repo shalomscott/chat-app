@@ -1,12 +1,12 @@
 <app-message-bubble
-  *ngFor="let message of messagesService.getMessages()"
+  *ngFor="let message of messagesService.messages | async"
   [message]="message"
   [isYou]="messagesService.isCurrentUser(message)"
 ></app-message-bubble>
 
 <div class="input-area">
   <p>
-    {{ getTypingMessage() }}
+    {{ typingMessage | async }}
     <wbr />
   </p>
 
