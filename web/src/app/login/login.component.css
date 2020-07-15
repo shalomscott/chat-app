@@ -20,9 +20,24 @@ form > * + * {
   margin-top: 1rem;
 }
 
+.field {
+  width: fit-content;
+  margin: 0 auto;
+}
+
 label {
   display: inline-block;
   width: 125px;
   text-align: end;
   padding-inline-end: 0.5rem;
+}
+
+.validation {
+  font-size: 1rem;
+  text-align: start;
+  padding-top: 0.5rem;
+}
+
+.ng-invalid.ng-touched {
+  border-color: var(--orange);
 }

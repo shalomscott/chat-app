@@ -9,12 +9,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class MessagingComponent implements OnInit {
   messageForm: FormGroup;
-  messages: Message[];
-  typingUsers: string[];
   private typingTimeout: number = null;
 
   constructor(
-    private messagesService: MessagesService,
+    public messagesService: MessagesService,
     formBuilder: FormBuilder
   ) {
     this.messageForm = formBuilder.group({
@@ -22,10 +20,7 @@ export class MessagingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.messages = this.messagesService.getMessages();
-    this.typingUsers = this.messagesService.getTypingUsers();
-  }
+  ngOnInit(): void {}
 
   typing() {
     if (this.typingTimeout) {
@@ -39,11 +34,12 @@ export class MessagingComponent implements OnInit {
     }, 500);
   }
 
-  formatTypingMessage() {
-    if (this.typingUsers.length > 0) {
-      const typingMessage = this.typingUsers.join(',');
+  getTypingMessage() {
+    const typingUsers = this.messagesService.getTypingUsers();
+    if (typingUsers.length > 0) {
+      const typingMessage = typingUsers.join(',');
       return typingMessage.concat(
-        this.typingUsers.length === 1 ? ' is typing...' : ' are typing...'
+        typingUsers.length === 1 ? ' is typing...' : ' are typing...'
       );
     }
   }

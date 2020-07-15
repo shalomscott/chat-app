@@ -4,6 +4,9 @@
       Username
     </label>
     <input id="username" type="text" formControlName="username" />
+    <div class="validation" *ngIf="hasErrors('username')">
+      {{ getErrorMessage("username") }}
+    </div>
   </div>
 
   <div class="field">
@@ -11,7 +14,12 @@
       Password
     </label>
     <input id="password" type="password" formControlName="password" />
+    <div class="validation" *ngIf="hasErrors('password')">
+      {{ getErrorMessage("password") }}
+    </div>
   </div>
 
-  <button class="button" type="submit">Login</button>
+  <button class="button" type="submit" [disabled]="!loginForm.valid">
+    Login
+  </button>
 </form>

@@ -16,6 +16,7 @@ io.on("connection", (socket) => {
     console.log("got started typing from " + username);
     io.emit("start_typing", username);
   });
+
   socket.on("stop_typing", (username) => {
     console.log("got stopped typing from " + username);
     io.emit("stop_typing", username);

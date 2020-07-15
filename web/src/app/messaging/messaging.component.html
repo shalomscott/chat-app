@@ -1,12 +1,13 @@
 <app-message-bubble
-  *ngFor="let message of messages"
+  *ngFor="let message of messagesService.getMessages()"
   [message]="message"
   [isYou]="messagesService.isCurrentUser(message)"
 ></app-message-bubble>
 
 <div class="input-area">
   <p>
-    {{ formatTypingMessage() }}
+    {{ getTypingMessage() }}
+    <wbr />
   </p>
 
   <form [formGroup]="messageForm" (ngSubmit)="send()">
