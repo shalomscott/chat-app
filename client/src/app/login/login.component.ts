@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ValidatorFn,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -41,27 +46,28 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  hasErrors(fieldName) {
+  hasErrors(fieldName: string): boolean {
     const control = this.loginForm.controls[fieldName];
-    return control.touched && control.errors;
+    return Boolean(control.touched && control.errors);
   }
 
-  getErrorMessage(fieldName) {
+  getErrorMessage(fieldName: string): string | undefined {
     const control = this.loginForm.controls[fieldName];
-
-    switch (Object.keys(control.errors)[0]) {
-      case 'required':
-        return 'Field requires a non empty value.';
-      case 'minlength':
-        return `A minimum of ${control.errors.minlength.requiredLength} characters is required.`;
-      case 'usernameTaken':
-        return 'That username is already in use.';
-      case 'pattern':
-        return 'Only alpha-numerical characters are allowed.';
+    if (control.errors) {
+      switch (Object.keys(control.errors)[0]) {
+        case 'required':
+          return 'Field requires a non empty value.';
+        case 'minlength':
+          return `A minimum of ${control.errors.minlength.requiredLength} characters is required.`;
+        case 'usernameTaken':
+          return 'That username is already in use.';
+        case 'pattern':
+          return 'Only alpha-numerical characters are allowed.';
+      }
     }
   }
 
-  submit() {
+  submit(): void {
     const { username, password } = this.loginForm.value;
     this.auth
       .submitCredentials({
@@ -69,11 +75,13 @@ export class LoginComponent implements OnInit {
         password,
       })
       .then((success) => {
-        if (success) this.router.navigateByUrl('/messaging');
+        if (success) {
+          this.router.navigateByUrl('/messaging');
+        }
       });
   }
 
-  usernameTakenValidator() {
+  usernameTakenValidator(): ValidatorFn {
     return () => {
       return Math.round(Math.random() * 10) % 2 === 0
         ? { usernameTaken: true }

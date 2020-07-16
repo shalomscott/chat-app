@@ -9,21 +9,37 @@ import { Observable } from 'rxjs';
   styleUrls: ['./messaging.component.css'],
 })
 export class MessagingComponent implements OnInit {
+  readonly typingMessage$: Observable<string>;
   messageForm: FormGroup;
-  private typingTimeout: number = null;
+  private typingTimeout: number | null;
 
   constructor(
     public messagesService: MessagesService,
     formBuilder: FormBuilder
   ) {
+    this.typingTimeout = null;
     this.messageForm = formBuilder.group({
       text: '',
+    });
+    this.typingMessage$ = new Observable((observer) => {
+      this.messagesService.typingUsers$.subscribe((users) => {
+        if (users.length > 0) {
+          const typingMessage = users.join(',');
+          observer.next(
+            typingMessage.concat(
+              users.length === 1 ? ' is typing...' : ' are typing...'
+            )
+          );
+        } else {
+          observer.next('');
+        }
+      });
     });
   }
 
   ngOnInit(): void {}
 
-  typing() {
+  onTyping(): void {
     if (this.typingTimeout) {
       clearTimeout(this.typingTimeout);
     } else {
@@ -35,24 +51,7 @@ export class MessagingComponent implements OnInit {
     }, 500);
   }
 
-  public readonly typingMessage: Observable<string> = new Observable(
-    (observer) => {
-      this.messagesService.typingUsers.subscribe((typingUsers) => {
-        if (typingUsers.length > 0) {
-          const typingMessage = typingUsers.join(',');
-          observer.next(
-            typingMessage.concat(
-              typingUsers.length === 1 ? ' is typing...' : ' are typing...'
-            )
-          );
-        } else {
-          observer.next('');
-        }
-      });
-    }
-  );
-
-  send() {
+  onSend(): void {
     this.messagesService.sendMessage(this.messageForm.value.text);
     this.messageForm.reset();
   }

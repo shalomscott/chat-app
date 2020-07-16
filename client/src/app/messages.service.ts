@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { environment } from '../environments/environment';
@@ -18,59 +18,57 @@ export interface Message {
 })
 export class MessagesService {
   private socket: SocketIOClient.Socket;
-  private messagesSubject: BehaviorSubject<Message[]> = new BehaviorSubject([]);
-  private typingUsersSubject: BehaviorSubject<string[]> = new BehaviorSubject(
-    []
-  );
+  private readonly messagesSubject$ = new BehaviorSubject<Message[]>([]);
+  private readonly typingUsersSubject$ = new BehaviorSubject<string[]>([]);
 
   constructor(private auth: AuthService) {
     this.socket = io(environment.SOCKET_ENDPOINT);
 
     this.socket.on('incomingMessage', (message: Message) => {
-      this.messagesSubject.next([...this.messagesSubject.value, message]);
+      this.messagesSubject$.next([...this.messagesSubject$.value, message]);
       if (!this.isCurrentUser(message)) {
         this.socket.emit('ack', message.id);
       }
     });
 
-    this.socket.on('ack', (messageId) => {
-      const ackedMessage = this.messagesSubject.value.find(
+    this.socket.on('ack', (messageId: string) => {
+      const ackedMessage = this.messagesSubject$.value.find(
         (m) => m.id === messageId
       );
       if (ackedMessage) {
         ackedMessage.acked = true;
-        this.messagesSubject.next([...this.messagesSubject.value]);
+        this.messagesSubject$.next([...this.messagesSubject$.value]);
       }
     });
 
-    this.socket.on('start_typing', (username) => {
+    this.socket.on('start_typing', (username: string) => {
       if (username !== this.auth.getCurrentUser()) {
-        this.typingUsersSubject.next([
-          ...this.typingUsersSubject.value,
+        this.typingUsersSubject$.next([
+          ...this.typingUsersSubject$.value,
           username,
         ]);
       }
     });
 
-    this.socket.on('stop_typing', (username) => {
-      const currentTypingUsers = [...this.typingUsersSubject.value];
+    this.socket.on('stop_typing', (username: string) => {
+      const currentTypingUsers = [...this.typingUsersSubject$.value];
       const index = currentTypingUsers.findIndex((t) => t === username);
       if (index > -1) {
         currentTypingUsers.splice(index, 1);
-        this.typingUsersSubject.next(currentTypingUsers);
+        this.typingUsersSubject$.next(currentTypingUsers);
       }
     });
   }
 
-  get messages() {
-    return this.messagesSubject.asObservable();
+  get messages$(): Observable<Message[]> {
+    return this.messagesSubject$.asObservable();
   }
 
-  get typingUsers() {
-    return this.typingUsersSubject.asObservable();
+  get typingUsers$(): Observable<string[]> {
+    return this.typingUsersSubject$.asObservable();
   }
 
-  sendMessage(text) {
+  sendMessage(text: string): void {
     this.socket.emit('outgoingMessage', {
       username: this.auth.getCurrentUser(),
       text,
@@ -81,11 +79,11 @@ export class MessagesService {
     return message.username === this.auth.getCurrentUser();
   }
 
-  startTyping() {
+  startTyping(): void {
     this.socket.emit('start_typing', this.auth.getCurrentUser());
   }
 
-  stopTyping() {
+  stopTyping(): void {
     this.socket.emit('stop_typing', this.auth.getCurrentUser());
   }
 }

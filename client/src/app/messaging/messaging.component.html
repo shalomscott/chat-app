@@ -1,17 +1,17 @@
 <app-message-bubble
-  *ngFor="let message of messagesService.messages | async"
+  *ngFor="let message of messagesService.messages$ | async"
   [message]="message"
   [isYou]="messagesService.isCurrentUser(message)"
 ></app-message-bubble>
 
 <div class="input-area">
   <p>
-    {{ typingMessage | async }}
+    {{ typingMessage$ | async }}
     <wbr />
   </p>
 
-  <form [formGroup]="messageForm" (ngSubmit)="send()">
-    <input id="text" type="text" formControlName="text" (input)="typing()" />
+  <form [formGroup]="messageForm" (ngSubmit)="onSend()">
+    <input id="text" type="text" formControlName="text" (input)="onTyping()" />
     <button class="button" type="submit">Send</button>
   </form>
 </div>

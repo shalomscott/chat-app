@@ -4,12 +4,21 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class AuthService {
-  private username: string = null;
-  private password: string = null;
+  private username: string | null;
+  private password: string | null;
 
-  constructor() {}
+  constructor() {
+    this.username = null;
+    this.password = null;
+  }
 
-  submitCredentials({ username, password }): Promise<boolean> {
+  submitCredentials({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }): Promise<boolean> {
     this.username = username;
     this.password = password;
     return new Promise((resolve) => {
@@ -17,7 +26,7 @@ export class AuthService {
     });
   }
 
-  getCurrentUser() {
+  getCurrentUser(): string | null {
     return this.username;
   }
 }

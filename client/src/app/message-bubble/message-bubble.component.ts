@@ -7,10 +7,19 @@ import { Message } from '../messages.service';
   styleUrls: ['./message-bubble.component.css'],
 })
 export class MessageBubbleComponent implements OnInit {
-  @Input() message: Message = null;
-  @Input() isYou: boolean = false;
+  @Input() message: Message;
+  @Input() isYou: boolean;
 
-  constructor() {}
+  constructor() {
+    this.message = {
+      id: '',
+      timestamp: 0,
+      username: '',
+      text: '',
+      acked: false,
+    };
+    this.isYou = false;
+  }
 
   ngOnInit(): void {}
 }
