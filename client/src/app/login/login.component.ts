@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     formBuilder: FormBuilder,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private messagesService: MessagesService
   ) {
     this.loginForm = formBuilder.group(
       {
@@ -44,7 +46,9 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.messagesService.clearMessages();
+  }
 
   hasErrors(fieldName: string): boolean {
     const control = this.loginForm.controls[fieldName];

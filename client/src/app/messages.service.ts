@@ -86,4 +86,8 @@ export class MessagesService {
   stopTyping(): void {
     this.socket.emit('stop_typing', this.auth.getCurrentUser());
   }
+
+  clearMessages(): void {
+    this.messagesSubject$.next([]);
+  }
 }
