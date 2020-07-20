@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class AuthService implements CanActivate {
   private username: string | null;
   private password: string | null;
 
-  constructor() {
+  constructor(private router: Router) {
     this.username = null;
     this.password = null;
+  }
+
+  canActivate(): boolean {
+    if (this.username === null) {
+      this.router.navigateByUrl('/login');
+      return false;
+    }
+    return true;
   }
 
   submitCredentials({

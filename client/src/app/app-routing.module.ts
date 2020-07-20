@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { MessagingComponent } from './messaging/messaging.component';
+import { AuthService } from './auth.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'messaging', component: MessagingComponent },
+  {
+    path: 'messaging',
+    component: MessagingComponent,
+    canActivate: [AuthService],
+  },
   { path: '**', redirectTo: '/login', pathMatch: 'full' },
 ];
 
