@@ -59,8 +59,8 @@
 }
 
 /* Right triangle placed top left flush. */
-.bubble:not(.you):before {
-  content: " ";
+.bubble::before {
+  content: "";
   position: absolute;
   width: 0;
   height: 0;
@@ -72,8 +72,8 @@
   border: 24px solid;
   border-color: black transparent transparent transparent;
 }
-.bubble:not(.you):after {
-  content: " ";
+.bubble::after {
+  content: "";
   position: absolute;
   width: 0;
   height: 0;
@@ -86,28 +86,11 @@
 }
 
 /* Right triangle placed top right flush. */
-.bubble.you:before {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
+.you > .bubble:before {
   left: auto;
   right: -25px;
-  top: -2px;
-  bottom: auto;
-  z-index: -1;
-  border: 24px solid;
-  border-color: black transparent transparent transparent;
 }
-.bubble.you:after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
+.you > .bubble::after {
   left: auto;
   right: -20px;
-  top: 0px;
-  bottom: auto;
-  border: 20px solid;
-  border-color: var(--color) transparent transparent transparent;
 }
