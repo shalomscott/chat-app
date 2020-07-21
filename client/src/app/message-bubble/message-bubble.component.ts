@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Message } from '../messages.service';
+import { Message } from '@app/messages.service';
 
 @Component({
   selector: 'app-message-bubble',

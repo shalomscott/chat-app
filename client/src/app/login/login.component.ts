@@ -6,8 +6,8 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { MessagesService } from '../messages.service';
+import { AuthService } from '@app/auth.service';
+import { MessagesService } from '@app/messages.service';
 
 @Component({
   selector: 'app-login',
