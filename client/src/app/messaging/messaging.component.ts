@@ -12,6 +12,7 @@ export class MessagingComponent implements OnInit {
   readonly typingMessage$: Observable<string>;
   messageForm: FormGroup;
   private typingTimeout: number | null;
+  private messagesContainer: any;
 
   constructor(
     public messagesService: MessagesService,
@@ -37,7 +38,16 @@ export class MessagingComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.messagesContainer = document.querySelector(
+      'app-messaging .messages-container'
+    );
+    this.messagesService.messages$.subscribe(() => {
+      setTimeout(() => {
+        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+      }, 200);
+    });
+  }
 
   onTyping(): void {
     if (this.typingTimeout) {
@@ -52,7 +62,9 @@ export class MessagingComponent implements OnInit {
   }
 
   onSend(): void {
-    this.messagesService.sendMessage(this.messageForm.value.text);
-    this.messageForm.reset();
+    if (this.messageForm.value.text) {
+      this.messagesService.sendMessage(this.messageForm.value.text);
+      this.messageForm.reset();
+    }
   }
 }

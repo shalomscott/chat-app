@@ -22,6 +22,7 @@
   background-color: var(--color);
   border: 2px solid black;
   text-align: start;
+  margin: 0 30px;
 }
 
 .content {

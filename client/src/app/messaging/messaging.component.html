@@ -1,8 +1,10 @@
-<app-message-bubble
-  *ngFor="let message of messagesService.messages$ | async"
-  [message]="message"
-  [isYou]="messagesService.isCurrentUser(message)"
-></app-message-bubble>
+<div class="messages-container">
+  <app-message-bubble
+    *ngFor="let message of messagesService.messages$ | async"
+    [message]="message"
+    [isYou]="messagesService.isCurrentUser(message)"
+  ></app-message-bubble>
+</div>
 
 <div class="input-area">
   <p>
